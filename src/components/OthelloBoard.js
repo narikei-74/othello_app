@@ -1,6 +1,7 @@
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Pressable } from "react-native";
 import { useState, useEffect } from "react";
 import MakeFirstBoardStatus from "../services/MakeFirstBoardStatus";
+import ChangeBoardStatus from "../services/ChangeBoardStatus";
 
 const OthelloBoard = () => {
   const masuLength = 8;
@@ -8,8 +9,9 @@ const OthelloBoard = () => {
   const none = 0;
   const black = 1;
   const white = 2;
-  let currentBoardStatus = MakeFirstBoardStatus();
-  console.log(currentBoardStatus);
+
+  const [othelloStatus, setOthelloStatus] = useState(MakeFirstBoardStatus());
+  const [turn, setTurn] = useState(black);
 
   // 列のview作成関数
   const retsuView = (line, lineIndex) => {
@@ -19,11 +21,21 @@ const OthelloBoard = () => {
       switch (masu) {
         case none:
           return (
-            <View
-              key={lineIndex + "_" + index}
-              id={lineIndex + "_" + index}
+            <Pressable
               style={style}
-            ></View>
+              onPress={() => {
+                setOthelloStatus(
+                  ChangeBoardStatus(turn, lineIndex, index, othelloStatus)
+                );
+                if (turn == black) {
+                  setTurn(white);
+                } else {
+                  setTurn(black);
+                }
+              }}
+            >
+              <View></View>
+            </Pressable>
           );
         case black:
           return (
@@ -50,7 +62,7 @@ const OthelloBoard = () => {
   };
 
   // オセロ盤面のviewを作成
-  const othelloView = currentBoardStatus.map((line, index) => {
+  const othelloView = othelloStatus.map((line, index) => {
     return (
       <View
         key={index}
