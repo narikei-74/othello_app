@@ -24,14 +24,14 @@ const OthelloBoard = () => {
             <Pressable
               style={style}
               onPress={() => {
-                setOthelloStatus(
-                  ChangeBoardStatus(turn, lineIndex, index, othelloStatus)
+                let ChangeBoardStatusResult = ChangeBoardStatus(
+                  turn,
+                  lineIndex,
+                  index,
+                  othelloStatus
                 );
-                if (turn == black) {
-                  setTurn(white);
-                } else {
-                  setTurn(black);
-                }
+                setOthelloStatus(ChangeBoardStatusResult.currentStatus);
+                setTurn(ChangeBoardStatusResult.turn);
               }}
             >
               <View></View>
